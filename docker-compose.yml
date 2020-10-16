@@ -1,0 +1,112 @@
+version: '3'
+
+services:
+  site:
+    build:
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: nginx
+    ports:
+      - '8090:80'
+    volumes:
+      - ./backend:/var/www/html:delegated
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 0:3306
+    environment:
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - laravel
+    volumes:
+      - mysql:/var/lib/mysql
+
+  backend:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: backend
+    volumes:
+      - ./backend:/var/www/html:delegated
+    ports:
+      - '9000:9000'
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+
+  composer:
+    build:
+      context: .
+      dockerfile: composer.dockerfile
+    container_name: composer
+    volumes:
+      - ./backend:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - backend
+    user: laravel
+    networks:
+      - laravel
+    entrypoint: ['composer', '--ignore-platform-reqs']
+
+  frontend:
+    image: node:current-alpine
+    container_name: frontend
+    expose:
+      - 8080
+    volumes:
+      - ./frontend:/home/node/app
+      - node-modules:/app/node_modules
+    working_dir: /home/node/app
+    networks:
+      - laravel
+    environment:
+      NODE_ENV: development
+    command: 'npm run serve'
+
+  npm:
+    image: node:current-alpine
+    container_name: npm
+    volumes:
+      - ./frontend:/home/node/app
+      - node-modules:/app/node_modules
+    working_dir: /home/node/app
+    entrypoint: ['npm']
+
+  artisan:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: artisan
+    volumes:
+      - ./backend:/var/www/html:delegated
+    depends_on:
+      - mysql
+    working_dir: /var/www/html
+    user: laravel
+    entrypoint: ['php', '/var/www/html/artisan']
+    networks:
+      - laravel
+
+# Create Persistance Volume
+volumes:
+  mysql:
+  node-modules:
+
+networks:
+  laravel:
