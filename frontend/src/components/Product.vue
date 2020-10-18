@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="product__info">
-      <h1 class="product__title">{{ product.title }}</h1>
+      <h2 class="product__title">{{ product.title }}</h2>
       <ProductInfoItem
         class="product__info-item product__inventory-quantity"
         title="Inventory Quantity"

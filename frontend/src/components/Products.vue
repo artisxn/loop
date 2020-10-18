@@ -105,7 +105,7 @@ export default {
 .products {
   max-width: 32rem;
   width: 100%;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 1rem;
 
   &__list {
