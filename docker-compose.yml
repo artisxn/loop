@@ -91,6 +91,27 @@ services:
     command: '/usr/local/bin/start'
     depends_on:
       - backend
+      - redis
+    networks:
+      - laravel
+
+  artisan:
+    image: laravel-app
+    container_name: artisan
+    environment:
+      APP_ENV: local
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_DRIVER: redis
+      REDIS_HOST: redis
+    volumes:
+      - ./backend:/var/www/html:delegated
+    depends_on:
+      - mysql
+      - redis
+    working_dir: /var/www/html
+    user: laravel
+    entrypoint: ['php', '/var/www/html/artisan']
     networks:
       - laravel
 
@@ -165,28 +186,6 @@ services:
     command: 'npm run test:e2e'
     depends_on:
       - site
-    networks:
-      - laravel
-
-  artisan:
-    build:
-      context: .
-      dockerfile: php.dockerfile
-    container_name: artisan
-    environment:
-      APP_ENV: local
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
-      QUEUE_DRIVER: redis
-      REDIS_HOST: redis
-    volumes:
-      - ./backend:/var/www/html:delegated
-    depends_on:
-      - mysql
-      - redis
-    working_dir: /var/www/html
-    user: laravel
-    entrypoint: ['php', '/var/www/html/artisan']
     networks:
       - laravel
 
