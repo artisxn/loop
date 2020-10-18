@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateLineItemsTableWithVariantId extends Migration
+class UpdateProductVariantsTableWithPrice extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class UpdateLineItemsTableWithVariantId extends Migration
      */
     public function up()
     {
-        Schema::table('line_items', function (Blueprint $table) {
-            $table->foreignId('variant_id')->after('product_id')->constrained();
+        Schema::table('product_variants', function (Blueprint $table) {
+            $table->string('price')->after('quantity')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class UpdateLineItemsTableWithVariantId extends Migration
      */
     public function down()
     {
-        Schema::table('line_items', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('variant_id');
+        Schema::table('product_variants', function (Blueprint $table) {
+            $table->dropColumn('price');
         });
     }
 }

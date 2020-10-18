@@ -49,6 +49,7 @@ class ShopifySyncProductsManager extends ShopifyBaseSyncManager implements IShop
                     'product_id' => $shopifyProductId,
                     'title' => $variant['title'],
                     'quantity' => $variant['inventory_quantity'],
+                    'price' => $variant['price'],
                     'created_at' => $variant['created_at'],
                     'updated_at' => $variant['updated_at'],
                 ];

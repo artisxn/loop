@@ -19,7 +19,7 @@ class Product extends Model
      */
     protected $fillable = ['id', 'title', 'image', 'created_at', 'updated_at'];
 
-    protected $appends = ['total_sales', 'total_quantity'];
+    protected $appends = ['total_sales', 'total_quantity', 'times_purchased'];
 
     public function getTotalSalesAttribute()
     {
@@ -35,6 +35,14 @@ class Product extends Model
     {
         return $this->productVariants->reduce(function ($carry, $variant) {
             return $carry + $variant->quantity;
+        }, 0);
+    }
+
+    public function getTimesPurchasedAttribute()
+    {
+        return $this->lineItems->reduce(function ($carry, $lineItem) {
+            $quantity = $lineItem->quantity;
+            return $carry + $quantity;
         }, 0);
     }
 

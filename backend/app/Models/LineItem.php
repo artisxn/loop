@@ -27,4 +27,9 @@ class LineItem extends Pivot
     {
         return $this->hasMany('App\Models\Order');
     }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Products');
+    }
 }
