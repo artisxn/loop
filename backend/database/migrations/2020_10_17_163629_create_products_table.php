@@ -14,8 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('shopify_id')->unique();
+            $table->unsignedBigInteger('id')->unique();
             $table->string('title');
             $table->string('image')->nullable();
             $table->timestamps();

@@ -14,12 +14,11 @@ class CreateLineItemsTable extends Migration
     public function up()
     {
         Schema::create('line_items', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('shopify_id');
+            $table->unsignedBigInteger('id')->unique();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('order_id')->constrained();
             $table->integer('quantity');
-            $table->boolean('gift_card');
+            $table->boolean('gift_card')->default(false);
             $table->string('price');
             $table->string('total_discount')->nullable();
             $table->timestamps();
