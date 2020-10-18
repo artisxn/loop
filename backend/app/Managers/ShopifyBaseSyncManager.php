@@ -22,27 +22,17 @@ abstract class ShopifyBaseSyncManager implements IShopifySyncManager
      */
     protected $repository;
 
-    public function sync()
+    public function syncPaginated($link)
     {
-        $array = $this->getLatestFromShopify(null);
-        $this->createLocally($array);
+        $response = $this->getPaginatedFromShopify($link);
+        $this->createLocally($this->shopifyRepository->returnData($response));
+
+        return !is_null($response['link']) ? $response['link']['next'] : null;
     }
 
-    public function syncNew()
+    public function getPaginatedFromShopify($link)
     {
-        $mostRecent = $this->getMostRecentLocally();
-        $array = $this->getLatestFromShopify($mostRecent ? $mostRecent->shopify_id : null);
-        $this->createLocally($array);
-    }
-
-    public function getMostRecentLocally()
-    {
-        return $this->repository->getAll();
-    }
-
-    public function getLatestFromShopify($latest)
-    {
-        return $this->shopifyRepository->getSinceId($latest);
+        return $this->shopifyRepository->getPaginated($link);
     }
 
     abstract public function createLocally($array);

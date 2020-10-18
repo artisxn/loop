@@ -9,6 +9,11 @@ use App\Repositories\ShopifyOrderRepository;
 
 class ShopifySyncOrdersManager extends ShopifyBaseSyncManager implements IShopifySyncManager
 {
+    /**
+     * Line Item Repository
+     *
+     * @var LineItemRepository
+     */
     protected $lineItemRepository;
 
     public function __construct(ShopifyOrderRepository $shopifyRepository, OrderRepository $repository, LineItemRepository $lineItemRepository)

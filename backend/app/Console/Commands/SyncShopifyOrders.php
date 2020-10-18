@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Managers\ShopifySyncOrdersManager;
+use App\Jobs\SyncShopifyOrders as SyncShopifyOrdersJob;
 use Illuminate\Console\Command;
 
 class SyncShopifyOrders extends Command
@@ -36,9 +36,9 @@ class SyncShopifyOrders extends Command
      *
      * @return int
      */
-    public function handle(ShopifySyncOrdersManager $syncManager)
+    public function handle()
     {
-        $syncManager->sync();
+        SyncShopifyOrdersJob::dispatch(null);
 
         return 0;
     }

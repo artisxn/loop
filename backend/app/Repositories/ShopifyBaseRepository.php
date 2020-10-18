@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\IShopifyRepository;
+use Osiset\BasicShopifyAPI\BasicShopifyAPI;
 use PHPShopify\ShopifySDK;
 
 abstract class ShopifyBaseRepository implements IShopifyRepository
@@ -10,11 +11,11 @@ abstract class ShopifyBaseRepository implements IShopifyRepository
     /**
      * Shopify SDK Instance
      *
-     * @var ShopifySDK
+     * @var BasicShopifyAPI
      */
     protected $shopify;
 
-    public function __construct(ShopifySDK $shopify) {
+    public function __construct(BasicShopifyAPI $shopify) {
         $this->shopify = $shopify;
     }
 
@@ -24,18 +25,14 @@ abstract class ShopifyBaseRepository implements IShopifyRepository
 
     public function getAll()
     {
-        return $this->get(null);
+        return $this->returnData($this->get(null));
     }
 
-    public function getSinceId($id)
-    {
-        return $this->get(['since_id' => $id]);
-    }
-
-    public function getLimitedAmount(int $limit = 50)
+    public function getPaginated(string $link = null, int $limit = 100)
     {
         return $this->get([
             'limit' => $limit,
+            'page_info' => $link,
         ]);
     }
 }

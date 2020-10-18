@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Osiset\BasicShopifyAPI\BasicShopifyAPI;
+use Osiset\BasicShopifyAPI\Options;
+use Osiset\BasicShopifyAPI\Session;
 use PHPShopify\ShopifySDK;
 
 class ShopifyServiceProvider extends ServiceProvider
@@ -14,12 +17,17 @@ class ShopifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(ShopifySDK::class, function ($app) {
-            return new ShopifySDK([
-                'ShopUrl' => config('shopify.shop_url'),
-                'ApiKey' => config('shopify.api_key'),
-                'Password' => config('shopify.password'),
-            ]);
+        $this->app->singleton(BasicShopifyAPI::class, function ($app) {
+            $options = new Options();
+            $options->setType(true);
+            $options->setVersion('2020-01');
+            $options->setApiKey(config('shopify.api_key'));
+            $options->setApiPassword(config('shopify.password'));
+
+            $api = new BasicShopifyAPI($options);
+            $api->setSession(new Session(config('shopify.shop_url')));
+
+            return $api;
         });
     }
 

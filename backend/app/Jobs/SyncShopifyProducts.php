@@ -9,18 +9,20 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncNewShopifyProducts implements ShouldQueue
+class SyncShopifyProducts implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $link;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($link)
     {
-        //
+        $this->link = $link;
     }
 
     /**
@@ -30,6 +32,10 @@ class SyncNewShopifyProducts implements ShouldQueue
      */
     public function handle(ShopifySyncProductsManager $syncManager)
     {
-        $syncManager->syncNew();
+        $nextLink = $syncManager->syncPaginated($this->link);
+
+        if ($nextLink) {
+            self::dispatch($nextLink)->delay(now()->addSeconds(10));
+        }
     }
 }

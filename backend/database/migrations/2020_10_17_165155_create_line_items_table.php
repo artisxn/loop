@@ -15,7 +15,7 @@ class CreateLineItemsTable extends Migration
     {
         Schema::create('line_items', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->unique();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->foreignId('order_id')->constrained();
             $table->integer('quantity');
             $table->boolean('gift_card')->default(false);

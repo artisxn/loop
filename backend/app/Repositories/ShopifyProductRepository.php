@@ -9,11 +9,16 @@ class ShopifyProductRepository extends ShopifyBaseRepository implements IShopify
 {
     public function get($params)
     {
-        return $this->shopify->Product()->get($params);
+        return $this->shopify->rest('GET', '/admin/products.json', $params);
     }
 
     public function find($id)
     {
-        return $this->shopify->Product($id)->get();
+        return $this->shopify->rest('GET', "/admin/products/$id.json")['body']['product'];
+    }
+
+    public function returnData($response)
+    {
+        return $response['body']['products'];
     }
 }

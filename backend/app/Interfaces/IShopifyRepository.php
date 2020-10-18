@@ -6,7 +6,7 @@ interface IShopifyRepository extends IReadOnlyRepository
 {
     public function get($params);
 
-    public function getLimitedAmount(int $limit = 50);
+    public function getPaginated(string $link = null, int $limit = 100);
 
-    public function getSinceId($id);
+    public function returnData($response);
 }

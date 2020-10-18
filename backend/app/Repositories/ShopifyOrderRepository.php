@@ -8,11 +8,16 @@ class ShopifyOrderRepository extends ShopifyBaseRepository implements IShopifyRe
 {
     public function get($params)
     {
-        return $this->shopify->Order()->get($params);
+        return $this->shopify->rest('GET', '/admin/orders.json', $params);
     }
 
     public function find($id)
     {
-        return $this->shopify->Order($id)->get();
+        return $this->shopify->rest('GET', "/admin/orders/$id.json")['body']['product'];
+    }
+
+    public function returnData($response)
+    {
+        return $response['body']['orders'];
     }
 }

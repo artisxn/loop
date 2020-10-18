@@ -4,13 +4,9 @@ namespace App\Interfaces;
 
 interface IShopifySyncManager
 {
-    public function sync();
+    public function syncPaginated($link);
 
-    public function syncNew();
-
-    public function getLatestFromShopify($latest);
-
-    public function getMostRecentLocally();
+    public function getPaginatedFromShopify($link);
 
     public function createLocally($array);
 }
