@@ -30,6 +30,6 @@ class SyncNewShopifyOrders implements ShouldQueue
      */
     public function handle(ShopifySyncOrdersManager $syncManager)
     {
-        $syncManager->sync();
+        $syncManager->syncNew();
     }
 }

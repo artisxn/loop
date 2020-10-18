@@ -24,6 +24,12 @@ abstract class ShopifyBaseSyncManager implements IShopifySyncManager
 
     public function sync()
     {
+        $array = $this->getLatestFromShopify(null);
+        $this->createLocally($array);
+    }
+
+    public function syncNew()
+    {
         $mostRecent = $this->getMostRecentLocally();
         $array = $this->getLatestFromShopify($mostRecent ? $mostRecent->shopify_id : null);
         $this->createLocally($array);
@@ -31,7 +37,7 @@ abstract class ShopifyBaseSyncManager implements IShopifySyncManager
 
     public function getMostRecentLocally()
     {
-        return $this->repository->mostRecent();
+        return $this->repository->getAll();
     }
 
     public function getLatestFromShopify($latest)
