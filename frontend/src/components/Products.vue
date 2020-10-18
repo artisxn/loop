@@ -1,6 +1,7 @@
 <template>
   <div class="products">
-    <Spinner v-if="loading" />
+    <div class="test"></div>
+    <Spinner v-if="loading" class="products__spinner" />
     <Error v-else-if="error">
       Could not get products.
     </Error>
