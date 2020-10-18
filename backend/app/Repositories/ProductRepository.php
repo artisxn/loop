@@ -12,6 +12,11 @@ class ProductRepository implements IRepository
         return Product::all();
     }
 
+    public function paginate()
+    {
+        return Product::simplePaginate();
+    }
+
     public function find($id)
     {
         return Product::query()->find($id);
