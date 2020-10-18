@@ -23,13 +23,13 @@ class LineItem extends Pivot
      */
     protected $guarded = [];
 
-    public function orders()
+    public function order()
     {
-        return $this->hasMany('App\Models\Order');
+        return $this->belongsTo('App\Models\Order');
     }
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany('App\Models\Products');
+        return $this->belongsTo('App\Models\Product');
     }
 }
