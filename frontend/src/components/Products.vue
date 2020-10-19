@@ -2,9 +2,12 @@
   <div class="products">
     <div class="test"></div>
     <Spinner v-if="loading" class="products__spinner" />
-    <Error v-else-if="error">
+    <Alert v-else-if="error" type="error">
       Could not get products.
-    </Error>
+    </Alert>
+    <Alert v-else-if="!products.length">
+      There are no products to display.
+    </Alert>
     <template v-else>
       <ul class="products__list">
         <li
@@ -30,14 +33,14 @@
 
 <script>
 import ky from 'ky';
-import Error from './Error';
+import Alert from './Alert';
 import Paginate from './Paginate';
 import Product from './Product';
 import Spinner from './Spinner';
 
 export default {
   name: 'Products',
-  components: { Error, Paginate, Product, Spinner },
+  components: { Alert, Paginate, Product, Spinner },
   data() {
     return {
       loading: true,
