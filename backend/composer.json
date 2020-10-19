@@ -15,7 +15,6 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "osiset/basic-shopify-api": "^10.0",
-        "phpclassic/php-shopify": "^1.1",
         "predis/predis": "^1.1"
     },
     "require-dev": {
